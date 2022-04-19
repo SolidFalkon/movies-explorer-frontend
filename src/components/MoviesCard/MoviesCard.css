@@ -1,0 +1,83 @@
+.movies-card{
+  background: #FDFDFD;
+  box-shadow: 0px 4px 30px rgba(0, 0, 0, 0.08);
+  border-radius: 6px;
+  text-align: center;
+  max-height: 319px;
+}
+.movies-card__description{
+  padding-top: 18px;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 18px;
+}
+.movies-card__name{
+  font-style: normal;
+  font-weight: 500;
+  font-size: 15px;
+  line-height: 18px;
+  margin: 0 0 0 20px;
+}
+.movies-card__time{
+  font-style: normal;
+  font-weight: 400;
+  font-size: 13px;
+  line-height: 18px;
+  margin: 0 16px 0 0;
+  color: #A0A0A0;
+}
+.movies-card__image{
+  max-width: 360px;
+  width: 100%;
+}
+.movies-card__save-button{
+  width: 100px;
+  height: 29px;
+  background: #F9F9F9;
+  border-radius: 30px;
+  border: none;
+  margin: 18px auto;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 11px;
+  cursor: pointer;
+}
+.movies-card__save-button:hover{
+  background: #F0F0F0;
+}
+.movies-card__save-button_active{
+  font-size: 0;
+  background: #EE3465;
+  background-image: url("../../images/check-mark.svg");
+  background-repeat: no-repeat;
+  background-position: center;
+}
+.movies-card__save-button_saved{
+  font-size: 0;
+  background-image: url("../../images/cross.svg");
+  background-repeat: no-repeat;
+  background-position: center;
+}
+.movies-card__save-button_saved:hover{
+  background: #F0F0F0;
+  background-image: url("../../images/cross.svg");
+  background-repeat: no-repeat;
+  background-position: center;
+}
+@media screen and (max-width: 665px){
+  .movies-card__description{
+    padding-top: 14px;
+    margin-bottom: 14px;
+  }
+  .movies-card__name{
+    margin-left: 14px;
+    font-size: 12px;
+  }
+  .movies-card__time{
+    font-size: 10px;
+  }
+  .movies-card__save-button{
+    margin: 14px auto;
+  }
+}
