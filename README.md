@@ -1,1 +1,1 @@
-# movies-explorer-frontend
+# Проект: Movies frontend-верстка

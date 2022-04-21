@@ -1,0 +1,82 @@
+.navigation{
+  background: rgba(0, 0, 0, 0.3);
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  z-index: 2;
+  transition: visibility .3s, opacity .3s linear;
+  display: none;
+}
+.navigation_enable{
+  display: block;
+}
+.navigation__content{
+  background: #FFFFFF;
+  height: 100%;
+  max-width: 520px;
+  width: 100%;
+  position: absolute;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: column;
+  right: 0;
+}
+.navigation__close{
+  background: #FFFFFF;
+  background-image: url("../../images/cross.svg");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  border: none;
+  width: 22px;
+  height: 22px;
+  margin-left: auto;
+  margin-right: 22px;
+  margin-top: 22px;
+}
+.navigation__close:hover{
+  opacity: 0.6;
+}
+.navigation__links{
+  display: flex;
+  flex-direction: column;
+  margin-bottom: auto;
+  margin-top: 10vh;
+}
+.navigation__link{
+  font-style: normal;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 22px;
+  color: #000000;
+  text-decoration: none;
+  padding-bottom: 4px;
+  margin: 0 auto 22px;
+}
+.navigation__link:hover{
+  opacity: 0.6;
+}
+.navigation__link_active{
+  width: fit-content;
+  border-bottom: 1px solid #000000;
+}
+.navigation__accaunt-link{
+  background: #F9F9F9;
+  border-radius: 20px;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 16px;
+  color: #000000;
+  text-decoration: none;
+  padding: 8px 20px;
+  margin-bottom: 7vh;
+}
+.navigation__accaunt-link:hover{
+  background: #F0F0F0;
+}
