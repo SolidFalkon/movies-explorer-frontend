@@ -10,6 +10,17 @@
   grid-template-columns: repeat(auto-fit, minmax(300px, 360px));
   justify-content: center;
 }
+.movies-card-list__error{
+  display: none;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 15px;
+  line-height: 18px;
+  color: #000000
+}
+.movies-card-list__error_active{
+  display: block;
+}
 .movies-card-list__more-btn{
   margin: 60px auto 80px;
   background: #F9F9F9;

@@ -3,12 +3,46 @@ import { NavLink } from 'react-router-dom';
 import './Login.css'
 
 function Login(props) {
-
+  
   const [email, setEmail] = useState('');
-  const [emailError, setEmailError] = useState(false);
   const [password, setPassword] = useState('');
+  const [emailError, setEmailError] = useState(false);
   const [passwordError, setPasswordError] = useState(false);
-  const [error, setError] = useState(false);
+  const [loginError, setLoginError] = useState(false)
+  const [buttonDisabled, setButtonDisabled] = useState(true);
+
+  //Валидация
+  React.useEffect(() => {
+    setLoginError(false)
+    if(password === '' || email === '')
+    {
+      setButtonDisabled(true)
+    }
+    else{
+      setButtonDisabled(false)
+    }
+    //Емаил
+    let re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    if (email !== ''){
+      if ( re.test(email)) {
+        setEmailError(false)
+      }
+      else{
+        setButtonDisabled(true)
+        setEmailError(true)
+      }
+    }
+    //Пароль
+    if (password !== ''){
+      if(password.length > 7) {
+        setPasswordError(false)
+      }
+      else{
+        setButtonDisabled(true)
+        setPasswordError(true)
+      }
+    }
+  } ,[email, password]);
 
   function handleChangeEmail(e) {
     setEmail(e.target.value);
@@ -18,22 +52,14 @@ function Login(props) {
     setPassword(e.target.value);
   }
 
-  function checkValidation(){
-    let re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    if ( re.test(email) ) {
-      setEmailError(false)
-    }
-    else {
-      setEmailError(true)
-      setError(true)
-    }
-    if(password.length > 6) {
-      setPasswordError(false)
-    }
-    else{
-      setPasswordError(true)
-      setError(true)
-    }
+  function handleSubmit(e) {
+    e.preventDefault();
+
+    props.onSubmit({
+        email,
+        password,
+    });
+    setLoginError(true)
   }
 
   React.useEffect(() => {
@@ -44,7 +70,7 @@ return(
   <main className='login'>
     <div className="login__logo"></div>
     <h2 className='login__title'>Рады видеть!</h2>
-    <form className="login__form">
+    <form className="login__form" onSubmit={handleSubmit}>
       <label className="login__lable" htmlFor="email">E-mail</label>
       <input
         className={`login__input ${emailError ? 'login__input-error' : ''}`}
@@ -56,6 +82,7 @@ return(
         value={`${email}`}
         required
       />
+      <span className={`register__error ${emailError ? 'register__error_enable' : ''}`}>Введите email адрес</span>
       <label className="login__lable" htmlFor="password">Пароль</label>
       <input
         className={`login__input ${passwordError ? 'login__input-error' : ''}`}
@@ -66,15 +93,16 @@ return(
         name="password"
         type="password"
         value={`${password}`}
-        minLength="6"
+        minLength="8"
       />
-      <span className={`login__error ${error ? 'login__error_enable' : ''}`}>Что-то пошло не так...</span>
+     <span className={`register__error ${passwordError ? 'register__error_enable' : ''}`}>Пароль должен содержать больше 7 символов</span>
+     <span className={`register__error ${loginError ? 'register__error_enable' : ''}`}>Не удалось войти</span>
       <div className="login__navigation">
-        <button type="submit" className="login__btn" onClick={checkValidation}>
+        <button type="submit" className={`login__btn ${buttonDisabled ? 'login__btn_disable' : ''}`} disabled={buttonDisabled}>
           Войти
         </button>
         <span className="login__link-description">Ещё не зарегистрированы? 
-          <NavLink className="login__link" to="/" >Регистрация</NavLink>
+          <NavLink className="login__link" to="/signup" >Регистрация</NavLink>
         </span>
       </div> 
     </form>

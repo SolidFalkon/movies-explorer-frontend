@@ -87,6 +87,10 @@
   line-height: 17px;
   color: #FFFFFF;
 }
+.register__btn_disable{
+  opacity: 0.6;
+  cursor: default;
+}
 .register__link-description{
   font-style: normal;
   font-weight: 400;
