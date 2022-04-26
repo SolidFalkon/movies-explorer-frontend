@@ -68,7 +68,7 @@ function Login(props) {
 
 return(
   <main className='login'>
-    <div className="login__logo"></div>
+    <NavLink className="login__logo" to="/"></NavLink>
     <h2 className='login__title'>Рады видеть!</h2>
     <form className="login__form" onSubmit={handleSubmit}>
       <label className="login__lable" htmlFor="email">E-mail</label>

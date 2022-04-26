@@ -88,7 +88,7 @@ function Register(props) {
 
 return(
   <main className='register'>
-    <div className="register__logo"></div>
+  <NavLink className="register__logo" to="/"></NavLink>
     <h2 className='register__title'>Добро пожаловать!</h2>
     <form className="register__form" onSubmit={handleSubmit}>
       <label className="register__lable" htmlFor="email">Имя</label>
