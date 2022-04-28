@@ -1,8 +1,10 @@
 import React, { useState } from "react";
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import './Register.css'
 
 function Register(props) {
+
+  let navigate = useNavigate();
 
   const [name, setName] = useState('')
   const [email, setEmail] = useState('');
@@ -12,6 +14,13 @@ function Register(props) {
   const [emailError, setEmailError] = useState(false);
   const [passwordError, setPasswordError] = useState(false);
   const [buttonDisabled, setButtonDisabled] = useState(true);
+
+  React.useEffect(() => {
+    if (props.loggedIn) 
+    {
+      navigate('/movies')
+    }
+  },[navigate, props.loggedIn]);
 
   //Валидация
   React.useEffect(() => {

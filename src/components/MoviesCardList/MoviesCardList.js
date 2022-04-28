@@ -48,9 +48,7 @@ function MoviesCardList(props) {
   function handleSave(movie, isActive, id){
     if (!isActive)
     {
-      mainApi.saveMovie(movie).then(newMovie => {
-        props.setMovies([newMovie , ...props.myMovies]);
-      })
+      mainApi.saveMovie(movie).then({})
         .catch((err) => {
           console.log(err);
         });
@@ -72,7 +70,7 @@ function MoviesCardList(props) {
         {props.movies.slice(0, maxCards).map((movie) => (
           <MoviesCard handleSave={handleSave} movie={movie} isSaved={props.isSaved} myMovies={props.myMovies}/>
         ) )}
-        {props.firstfind ? <p className={`movies-card-list__error ${props.isFind ? '' : 'movies-card-list__error_active'}`}>Ничего не найдено</p>
+        {props.firstFind ? <p className={`movies-card-list__error ${props.isFind ? '' : 'movies-card-list__error_active'}`}>Ничего не найдено</p>
         : <></>}
       </div>
       <button className={`movies-card-list__more-btn ${moreButton ? '' : 'movies-card-list__more-btn_disable'}`} onClick={handleMore}>Ещё</button>

@@ -43,7 +43,7 @@ class MainApi {
         credentials: 'include',
         headers: this._headers,
         body: JSON.stringify({
-          country: data.country,
+          country: `${data.country === '' ? 'unknow' : data.country}`,
           director: data.director,
           duration: data.duration,
           year: data.year,
@@ -51,7 +51,7 @@ class MainApi {
           image: `https://api.nomoreparties.co/${data.image.url}`,
           trailerLink: data.trailerLink,
           nameRU: data.nameRU,
-          nameEN: data.nameEN,
+          nameEN: `${data.nameEN === '' ? 'unknow' : data.nameEN}` ,
           thumbnail: `https://api.nomoreparties.co/${data.image.formats.thumbnail.url}`,
           movieId: data.id,
         })
@@ -173,7 +173,7 @@ class MainApi {
   // другие методы работы с API
 }
 export const mainApi = new MainApi({
-  baseUrl: 'https://api.cyberfalcon.movies.nomoredomains.work',
+  baseUrl: 'http://localhost:3001',
   headers: {
     'Content-Type': 'application/json'
   }

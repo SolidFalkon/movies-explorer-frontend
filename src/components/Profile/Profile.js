@@ -26,7 +26,15 @@ function Profile(props) {
   }
 
   React.useEffect(() => {
-    if(email === '' || name === '')
+    if(currentUser.name !== undefined)
+    {
+      setName(currentUser.name);
+      setEmail(currentUser.email);
+    }
+}, [currentUser,props]);
+
+  React.useEffect(() => {
+    if(email === '' && name === '')
     {
       setButtonDisabled(true)
     }
@@ -58,14 +66,10 @@ function Profile(props) {
         setEmailErrorText('Введите email адрес')
       }
     }
-    if (name === currentUser.name){
+    if (name === currentUser.name && email === currentUser.email){
+      setEmailErrorText('Вы уже используете эти данные')
       setNameError(true)
-      setButtonDisabled(true)
-      setNameErrorText('Вы уже используете данное имя')
-    }
-    if (email === currentUser.email){
       setEmailError(true)
-      setEmailErrorText('Вы уже используете данный email')
       setButtonDisabled(true)
     }
   } ,[currentUser.email, currentUser.name, email, name]);
@@ -76,19 +80,54 @@ function Profile(props) {
 
   function handleSubmit(e){
     e.preventDefault();
-    mainApi.patchNewProfile(name, email).then(data => {
-      props.setUser(data)
-      setIsSucces(true)
-    })
-    .catch((err) => {
-      console.log(err);
-      if (err === 'Ошибка: 409')
-      {
-        setEmailError(true)
-        setEmailErrorText('Данный email уже используется')
-        setButtonDisabled(true)
-      }
-    });
+    if (email === '')
+    {
+      mainApi.patchNewProfile(name, currentUser.email).then(data => {
+        props.setUser(data)
+        setIsSucces(true)
+      })
+      .catch((err) => {
+        console.log(err);
+        if (err === 'Ошибка: 409')
+        {
+          setEmailError(true)
+          setEmailErrorText('Данный email уже используется')
+          setButtonDisabled(true)
+        }
+      });
+    }
+    else if (name === '')
+    {
+      mainApi.patchNewProfile(currentUser.name, email).then(data => {
+        props.setUser(data)
+        setIsSucces(true)
+      })
+      .catch((err) => {
+        console.log(err);
+        if (err === 'Ошибка: 409')
+        {
+          setEmailError(true)
+          setEmailErrorText('Данный email уже используется')
+          setButtonDisabled(true)
+        }
+      });
+    }
+    else
+    {
+      mainApi.patchNewProfile(name, email).then(data => {
+        props.setUser(data)
+        setIsSucces(true)
+      })
+      .catch((err) => {
+        console.log(err);
+        if (err === 'Ошибка: 409')
+        {
+          setEmailError(true)
+          setEmailErrorText('Данный email уже используется')
+          setButtonDisabled(true)
+        }
+      });
+    }
   }
 
   React.useEffect(() => {
@@ -103,12 +142,11 @@ function Profile(props) {
           <input
             onChange={handleChangeName}
             className={`profile__input ${nameError ? 'profile__input-error' : ''}`}
-            placeholder={currentUser.name}
-            required
+            placeholder='Имя'
             id="name"
             name="name"
             type="text"
-            value={name}
+            value={`${name}`}
           />
         </label>
         <span className={`profile__error ${nameError ? 'profile__error_enable' : ''}`}>{nameErrorText}</span>
@@ -117,11 +155,10 @@ function Profile(props) {
             className={`profile__input ${emailError ? 'profile__input-error' : ''}`}
             onChange={handleChangeEmail}
             type="email"
-            placeholder={currentUser.email}
+            placeholder='Email'
             id="email"
             name="email"
             value={`${email}`}
-            required
           />
         </label>
         <span className={`profile__error ${emailError ? 'profile__error_enable' : ''}`}>{emailErrorText}</span>

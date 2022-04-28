@@ -4,12 +4,33 @@ import React, {useState} from 'react'
 
 function SearchForm(props) {
 
-  const [movieName, setMoiveName] = useState('');
+  const [movieName, setMovieName] = useState('');
   const [moiveNameError, setMoiveNameError] = useState(false);
   const [isShort, setIsShort] = useState(false)
+  
+  React.useEffect(() => {
+    let isShort;
+    let movieName;
+    if (localStorage.getItem("searchName") && (!props.isSaved))
+    { 
+      movieName = (localStorage.getItem('searchName'))
+      setMovieName(movieName)
+      if (localStorage.getItem('isShort') === 'false')
+      {
+        isShort = (false)
+        setIsShort(isShort)
+      }
+      else{
+        isShort = (true)
+        setIsShort(isShort)
+      }
+      props.startSearch(movieName, isShort);
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   function handleMoiveName(e) {
-    setMoiveName(e.target.value);
+    setMovieName(e.target.value);
   }
 
   function checkShort(e){
@@ -58,7 +79,7 @@ function SearchForm(props) {
           <button type="submit" className="search-form__button" onClick={handleSubmit}></button>
         </div>
         <div className="search-form__switcher-content">
-          <input type="checkbox" className="search-form__switcher" onClick={checkShort}></input>
+          <input type="checkbox" className="search-form__switcher" checked={isShort} onChange={checkShort}></input>
           <span className="search-form__switcher-description">Короткометражки</span>
         </div>
       </form>

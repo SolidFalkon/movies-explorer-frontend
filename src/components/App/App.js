@@ -20,43 +20,31 @@ function App() {
   const [isMain, setMain] = useState(false);
   const [isAutorizationForm, setAutorizationForm] = useState(false)
   const [isForm, setForm] = useState(false);
-  const [allMovies, setAllMovies] = React.useState([]);
+  const [allMovies, setAllMovies] = useState([]);
   const [windowInnerWidth, setWindowInnerWidth] = useState(window.innerWidth);
   const [loggedIn, setLoggedIn] = useState(false);
   const [currentUser, setUser] = useState({});
-  const [myMovies, setMyMovies] = React.useState([]);
   
   const navigate = useNavigate();
-  //Получение сохраненных карточек
-  React.useEffect(() => {
-    if(loggedIn){
-      mainApi.getInitialCards().then((res) => {
-        setMyMovies(res)
-      })
-      .catch((err) => {
-        console.log(err);
-      })
-    }
-  },[loggedIn]);
 
   // Логин
   useEffect(() => {
-    if (localStorage.getItem("token")) {
-      mainApi.checkToken().then((res) => {
-        if (res) {
-          setUser(res);
-          setLoggedIn(true);
-        }
-        else 
-        {
-          setLoggedIn(false);
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-    }
-  },[]);
+      if (localStorage.getItem("token")) {
+        mainApi.checkToken().then((res) => {
+          if (res) {
+            setUser(res);
+            setLoggedIn(true);
+          }
+          else 
+          {
+            setLoggedIn(false);
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+      }
+    },[loggedIn]);
   
   useEffect(() => {
     if (loggedIn){
@@ -88,7 +76,10 @@ function App() {
   function handleRegistration(inputs) {
     mainApi.registerNewProfile(inputs.name ,inputs.email, inputs.password).then(data => {
       if(data){
-        navigate('/signin');
+        setUser(data);
+        localStorage.setItem('token', data._id);
+        setLoggedIn(true);
+        navigate('/movies');
       }
     })
       .catch((err) => {
@@ -126,6 +117,8 @@ function App() {
   }
   function onSignOut(){
     localStorage.removeItem('token');
+    localStorage.removeItem('searchName')
+    localStorage.removeItem('isShort')
     setLoggedIn(false)
   }
 
@@ -137,13 +130,13 @@ function App() {
               <Route path="/" element={<Main checkPage={checkMain}/>}/>
               <Route path="/movies" element={
                 <ProtectedRoute navigate={navigate}>
-                  <Movies setMovies={setMyMovies} myMovies={myMovies} checkPage={checkMovies} movies={allMovies}  windowWidth={windowInnerWidth}/>
+                  <Movies checkPage={checkMovies} movies={allMovies}  windowWidth={windowInnerWidth}/>
                 </ProtectedRoute>       
               } 
               />
               <Route path="/saved-movies" element={
                 <ProtectedRoute navigate={navigate}>
-                  <SavedMovies setMovies={setMyMovies} myMovies={myMovies} checkPage={checkMovies} movies={allMovies} windowWidth={windowInnerWidth}/>
+                  <SavedMovies checkPage={checkMovies} movies={allMovies} windowWidth={windowInnerWidth}/>
                 </ProtectedRoute>
               } 
               />
@@ -153,8 +146,8 @@ function App() {
                 </ProtectedRoute>
               }
               />
-              <Route path="/signup" element={<Register checkPage={checkAutorizationForm} onSubmit={handleRegistration}/>} />
-              <Route path="/signin" element={<Login checkPage={checkAutorizationForm} onSubmit={handleLogin}/>} />
+              <Route path="/signup" element={<Register loggedIn={loggedIn} checkPage={checkAutorizationForm} onSubmit={handleRegistration}/>} />
+              <Route path="/signin" element={<Login loggedIn={loggedIn} checkPage={checkAutorizationForm} onSubmit={handleLogin}/>} />
               <Route path="/*" element={<Error404 checkPage={checkAutorizationForm} />} />
             </Routes>
           <Footer isForm={isForm}/>

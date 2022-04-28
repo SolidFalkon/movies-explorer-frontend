@@ -1,6 +1,7 @@
 import SearchForm from "../SearchForm/SearchForm";
 import MoviesCardList from "../MoviesCardList/MoviesCardList";
 import Preloader from "../Preloader/Preloader"
+import { mainApi } from '../../utils/MainApi.js'
 
 import React, {useState} from "react";
 
@@ -12,6 +13,17 @@ function Movies(props) {
   const [movieName, setMovieName] = useState('');
   const [isShort, setIsShort] = useState(false);
   const [firstFind, setFirstFind] = useState(false)
+  const [myMovies, setMyMovies] = useState([])
+
+  React.useEffect(() => {
+    mainApi.getInitialCards().then((res) => {
+      setMyMovies(res)
+    })
+    .catch((err) => {
+      console.log(err);
+    })
+  } ,[myMovies]);
+  
   
   React.useEffect(() => {
     props.checkPage();
@@ -19,18 +31,23 @@ function Movies(props) {
 
   React.useEffect(() => {
     let arr = [];
-    if (onPreloader){
+    if (onPreloader && props.movies.length > 0){
       props.movies.map((movie) => checkMovie(movie))
       if (arr.length === 0)
       {
+        localStorage.setItem("searchName", movieName);
+        localStorage.setItem("isShort", isShort)
         setOnPreloader(false)
         setFind(false)
       }
       setMovies(arr)
     }
     function checkMovie(movie){
+
       if(isShort){
-        if(movie.nameRU.includes(movieName) && movie.duration <= 40){
+        if(movie.nameRU.toLowerCase().includes(movieName.toLowerCase()) && movie.duration <= 40){
+          localStorage.setItem("searchName", movieName);
+          localStorage.setItem("isShort", isShort)
           setFind(true)
           setOnPreloader(false)
           arr.push(movie);
@@ -38,7 +55,9 @@ function Movies(props) {
       }
       else
       {
-        if(movie.nameRU.includes(movieName)){
+        if(movie.nameRU.toLowerCase().includes(movieName.toLowerCase())){
+          localStorage.setItem("searchName", movieName)
+          localStorage.setItem("isShort", isShort)
           setOnPreloader(false)
           setFind(true)
           arr.push(movie);
@@ -59,9 +78,9 @@ function Movies(props) {
 
   return(
     <main className='movies'>
-      <SearchForm startSearch={startSearch}/>
+      <SearchForm startSearch={startSearch} isSaved={false}/>
       {onPreloader ? <Preloader/> : <></>}
-      <MoviesCardList setMovies={props.setMovies} firstfind={firstFind} isSaved={false} windowWidth={props.windowWidth} myMovies={props.myMovies} movies={movies} isFind={isFind}/>
+      <MoviesCardList setMovies={setMovies} firstFind={firstFind} isSaved={false} windowWidth={props.windowWidth} myMovies={myMovies} movies={movies} isFind={isFind}/>
       </main>
   );
 }
