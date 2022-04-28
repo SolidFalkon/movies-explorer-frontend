@@ -173,7 +173,7 @@ class MainApi {
   // другие методы работы с API
 }
 export const mainApi = new MainApi({
-  baseUrl: 'http://localhost:3001',
+  baseUrl: 'https://api.cyberfalcon.movies.nomoredomains.work',
   headers: {
     'Content-Type': 'application/json'
   }
