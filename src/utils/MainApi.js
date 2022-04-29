@@ -150,7 +150,7 @@ class MainApi {
   // другие методы работы с API
 }
 export const mainApi = new MainApi({
-  baseUrl: 'https://api.cyberfalcon.movies.nomoredomains.work/movies',
+  baseUrl: 'https://api.cyberfalcon.movies.nomoredomains.work',
   headers: {
     'Content-Type': 'application/json'
   }
