@@ -17,7 +17,8 @@ function AboutProject(props) {
   }
 
   return(
-    <section className="about-project">
+    <section className="about-project" name='about-project'>
+      <a className='about-project-anchor' href="/#" name="about-project">Link</a>
       <h2 className="about-project__title">О проекте</h2>
       <div className="about-project__text-content">
         <div className="about-project__paragraph">

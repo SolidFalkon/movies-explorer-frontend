@@ -16,8 +16,8 @@ function AboutMe(props) {
             Програмированнием увлекаюсь с&nbsp;16&nbsp;лет. С&nbsp;2019 года работаю в&nbsp;компании ЦИТ &laquo;ВИРТЭКС&raquo;.
           </p>
           <nav className="about-me__navigation">
-              <a className="about-me__link" href="https://vk.com/cyberfalconas">VK</a>
-              <a className="about-me__link" href="https://github.com/SolidFalkon">Github</a>
+              <a className="about-me__link" href="https://vk.com/cyberfalconas" target="_blank" rel="noreferrer">VK</a>
+              <a className="about-me__link" href="https://github.com/SolidFalkon" target="_blank" rel="noreferrer">Github</a>
           </nav>
         </div>
       </div>

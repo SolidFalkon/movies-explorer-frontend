@@ -1,8 +1,12 @@
 .about-project{
   max-width: 1140px;
   margin: 0 auto;
+  position: relative;
 }
-
+.about-project-anchor{
+  opacity: 0;
+  position: absolute;
+}
 .about-project__title{
   font-style: normal;
   font-weight: 400;

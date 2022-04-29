@@ -10,7 +10,7 @@ function Promo(props) {
         </div>
         <div className="promo__image"></div>
       </div>
-      <button type="button" className="promo__button">Узнать больше</button>
+      <button  type="button" className="promo__button"><a href="#about-project" className="promo__button-link">Узнать больше</a></button>
     </section>
   );
 }

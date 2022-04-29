@@ -43,6 +43,10 @@
   color: #A0A0A0;
   border: none;
 }
+.search-form__input-error::placeholder{
+  color: #EE3465;
+  opacity: 0.6;
+}
 .search-form__input:focus{
   outline: 0;
   outline-offset: 0;

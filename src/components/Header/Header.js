@@ -19,6 +19,16 @@ function Header(props) {
       <Navigation closeNavigation={closeNavigation} isOpen={openPopup}/>
       <NavLink className="header__logo" to="/"></NavLink>
       {props.isMain ? 
+        props.loggedIn ? 
+        <div>
+          <nav className="header__navigation header__navigation_page_movies">
+            <NavLink className="header__link header__link_color_white" to="/movies">Фильмы</NavLink>
+            <NavLink className="header__link header__link_color_white" to="/saved-movies">Сохранённые фильмы</NavLink>
+            <NavLink className="header__link header__link_color_green" to="/profile">Аккаунт</NavLink>
+          </nav>
+          <button className='header__navigation-btn' onClick={openNavigation}></button>
+        </div>
+        :
         <nav className="header__navigation">
           <NavLink className="header__link header__link_color_white" to="/signup">Регистрация</NavLink>
           <NavLink className="header__link header__link_color_green" to="/signin">Войти</NavLink>

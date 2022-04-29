@@ -1,39 +1,13 @@
 import React, {useState} from "react";
 import MoviesCard from "../MoviesCard/MoviesCard";
-//для разнообразия картинок
-import img1 from '../../images/img1.jpg';
-import img2 from "../../images/img2.jpg";
-import img3 from"../../images/img3.jpg";
-import img4 from"../../images/img4.jpg";
-import img5 from"../../images/img5.jpg";
-import img6 from"../../images/img6.jpg";
-import img7 from"../../images/img7.jpg";
-import img8 from"../../images/img8.jpg";
-import img9 from"../../images/img9.jpg";
-import img10 from"../../images/img10.jpg";
-import img11 from"../../images/img11.jpg";
-import img12 from"../../images/img12.jpg";
-//
+import { mainApi } from '../../utils/MainApi.js'
 import './MoviesCardList.css';
 function MoviesCardList(props) {
 
-  //для разнообразия картинок
-  let images = [
-    img1,
-    img2,
-    img3,
-    img4,
-    img5,
-    img6,
-    img7,
-    img8,
-    img9,
-    img10,
-    img11,
-    img12,
-  ];
-//
+
   const [maxCards, setMaxCards] = useState(12);
+  const [moreCards, setMoreCards] = useState(0);
+  const [moreButton, setMoreButton] = useState(true)
   
   React.useEffect(() => {
     function handleSetCards(i) {
@@ -41,32 +15,68 @@ function MoviesCardList(props) {
     }
     if (props.windowWidth < 790)
     {
-      handleSetCards(4);
+      handleSetCards(4+moreCards);
     }
     else if (props.windowWidth < 1200)
     {
-      handleSetCards(8);
+      handleSetCards(8+moreCards);
     }
     else
     {
-      handleSetCards(12);
+      handleSetCards(12+moreCards);
     };
-  });
+    if (props.movies.length < maxCards || props.movies.length === maxCards)
+    {
+      setMoreButton(false);
+    }
+    else
+    {
+      setMoreButton(true)
+    }
+  },[maxCards, moreCards, props, props.movies.length, props.windowWidth]);
 
+  function handleMore(){
+    if (props.windowWidth < 1200)
+    {
+      setMoreCards(moreCards+2);
+    }
+    else
+    {
+      setMoreCards(moreCards+3);
+    }
+  }
+  function handleSave(movie, isActive, id){
+    if (!isActive)
+    {
+      mainApi.saveMovie(movie)
+      .then(() => {
+        props.setMovies();
+      })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+    else 
+    {
+      mainApi.deleteCard(id)
+      .then(() => {
+        props.setMovies();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    }
+  }
   return(
     <section className="movies-card-list">
       <div className="movies-card-list__cards">
-        {props.isSaved 
-        ? 
-        images.slice(0, 3).map((img) => (
-          <MoviesCard img={img} isSaved={props.isSaved}/>
-        ) ) 
-        : 
-        images.slice(0, maxCards).map((img) => (
-          <MoviesCard img={img} isSaved={props.isSaved}/>
+        {props.movies.slice(0, maxCards).map((movie) => (
+          <MoviesCard handleSave={handleSave} movie={movie} isSaved={props.isSaved} myMovies={props.myMovies}/>
         ) )}
+        {props.firstFind ? <p className={`movies-card-list__error ${props.isFind ? '' : 'movies-card-list__error_active'}`}>Ничего не найдено</p>
+        : <></>}
       </div>
-      <button className={`movies-card-list__more-btn ${(props.isSaved )? 'movies-card-list__more-btn_disable' : ''}`}>Ещё</button>
+      <button className={`movies-card-list__more-btn ${moreButton ? '' : 'movies-card-list__more-btn_disable'}`} onClick={handleMore}>Ещё</button>
     </section>
   );
 }

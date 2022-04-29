@@ -1,16 +1,77 @@
 import SearchForm from "../SearchForm/SearchForm";
 import MoviesCardList from "../MoviesCardList/MoviesCardList";
-import React from "react";
+import { mainApi } from '../../utils/MainApi.js'
+import React, {useState} from "react";
 
 function SavedMovies(props) {
+  const [movies, setMovies] = useState([]);
+  const [movieName, setMovieName] = useState('');
+  const [isFind, setFind] = useState(false);
+  const [isShort, setIsShort] = useState(false);
+  const [myMovies, setMyMovies] = useState([])
+
+  React.useEffect(() => {
+    getMyMovies();
+  } ,[]);
+
+  function getMyMovies(){
+    mainApi.getInitialCards().then((res) => {
+      setMyMovies(res)
+    })
+    .catch((err) => {
+      console.log(err);
+    })
+  }
+
   React.useEffect(() => {
     props.checkPage();
-  });
+  },[props]);
+
+  React.useEffect(() => {
+    if(myMovies.length === 0 && movies.length > 0)
+    {
+      setMovies(myMovies);
+    }
+    if(myMovies.length > 0)
+    {
+      let arr = [];
+      setMovieName(movieName)
+      setIsShort(isShort)
+      myMovies.map((movie) => checkMovie(movie))
+      if (arr.length === 0)
+      {
+        setFind(false)
+      }
+      else{
+        setFind(true)
+      }
+      function checkMovie(movie){
+        if(isShort){
+          if(movie.nameRU.toLowerCase().includes(movieName.toLowerCase()) && movie.duration <= 40){
+            arr.push(movie);
+          }
+        }
+        else
+        {
+          if(movie.nameRU.toLowerCase().includes(movieName.toLowerCase())){
+            arr.push(movie);
+          }
+        }
+        setMovies(arr)
+      }
+    }
+  },[isShort, movieName, movies.length, myMovies, props.myMovies])
+
+  function startSearch(movieName, isShort)
+  {
+    setMovieName(movieName);
+    setIsShort(isShort);
+  }
 
   return(
     <main className='movies'>
-      <SearchForm />
-      <MoviesCardList isSaved={true} windowWidth={props.windowWidth}/>
+      <SearchForm isSaved={true} startSearch={startSearch} />
+      <MoviesCardList firstFind={true} isFind={isFind} setMovies={getMyMovies} movies={movies} isSaved={true} windowWidth={props.windowWidth} myMovies={myMovies}/>
     </main>
   );
 }
