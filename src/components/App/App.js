@@ -58,34 +58,6 @@ function App() {
         });
     }
   }, [loggedIn]);
-
-  function handleLogin(inputs) {
-    mainApi.onLogin(inputs.email, inputs.password).then(data => {
-      if(data._id){
-        localStorage.setItem('token', data._id);
-        setLoggedIn(true);
-        navigate('/movies');
-      }
-    })
-      .catch((err) => {;
-        console.log(err);
-      });
-  };
-  //
-  // Регистрация
-  function handleRegistration(inputs) {
-    mainApi.registerNewProfile(inputs.name ,inputs.email, inputs.password).then(data => {
-      if(data){
-        setUser(data);
-        localStorage.setItem('token', data._id);
-        setLoggedIn(true);
-        navigate('/movies');
-      }
-    })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
   //
   React.useEffect(() => {
     function handleResize() {
@@ -146,8 +118,8 @@ function App() {
                 </ProtectedRoute>
               }
               />
-              <Route path="/signup" element={<Register loggedIn={loggedIn} checkPage={checkAutorizationForm} onSubmit={handleRegistration}/>} />
-              <Route path="/signin" element={<Login loggedIn={loggedIn} checkPage={checkAutorizationForm} onSubmit={handleLogin}/>} />
+              <Route path="/signup" element={<Register setLoggedIn={setLoggedIn} setUser={setUser} loggedIn={loggedIn} checkPage={checkAutorizationForm} />} />
+              <Route path="/signin" element={<Login setLoggedIn={setLoggedIn} loggedIn={loggedIn} checkPage={checkAutorizationForm}/>} />
               <Route path="/*" element={<Error404 checkPage={checkAutorizationForm} />} />
             </Routes>
           <Footer isForm={isForm}/>

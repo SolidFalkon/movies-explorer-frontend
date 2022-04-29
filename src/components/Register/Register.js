@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { NavLink, useNavigate } from 'react-router-dom';
+import { mainApi } from '../../utils/MainApi.js'
 import './Register.css'
 
 function Register(props) {
@@ -82,13 +83,19 @@ function Register(props) {
 
   function handleSubmit(e) {
     e.preventDefault();
-    props.onSubmit({
-        name,
-        email,
-        password,
-    });
-    setEmailErrorText('Данный email уже используется')
-    setEmailError(true)
+      mainApi.registerNewProfile(name ,email, password).then(data => {
+        if(data){
+          props.setUser(data);
+          localStorage.setItem('token', data._id);
+          props.setLoggedIn(true);
+          navigate('/movies');
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        setEmailErrorText('Данный email уже используется')
+        setEmailError(true)
+      });
   }
 
   React.useEffect(() => {

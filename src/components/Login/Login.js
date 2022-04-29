@@ -1,5 +1,6 @@
 import React, {useState} from "react";
 import { NavLink, useNavigate } from 'react-router-dom';
+import { mainApi } from '../../utils/MainApi.js'
 import './Login.css'
 
 function Login(props) {
@@ -63,12 +64,17 @@ function Login(props) {
 
   function handleSubmit(e) {
     e.preventDefault();
-
-    props.onSubmit({
-        email,
-        password,
-    });
-    setLoginError(true)
+      mainApi.onLogin(email, password).then(data => {
+        if(data._id){
+          localStorage.setItem('token', data._id);
+          props.setLoggedIn(true);
+          navigate('/movies');
+        }
+      })
+      .catch((err) => {;
+        console.log(err);
+        setLoginError(true)
+      });
   }
 
   React.useEffect(() => {

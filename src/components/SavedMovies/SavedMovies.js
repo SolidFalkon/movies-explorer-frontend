@@ -11,19 +11,27 @@ function SavedMovies(props) {
   const [myMovies, setMyMovies] = useState([])
 
   React.useEffect(() => {
+    getMyMovies();
+  } ,[]);
+
+  function getMyMovies(){
     mainApi.getInitialCards().then((res) => {
       setMyMovies(res)
     })
     .catch((err) => {
       console.log(err);
     })
-  } ,[movies]);
+  }
 
   React.useEffect(() => {
     props.checkPage();
   },[props]);
 
   React.useEffect(() => {
+    if(myMovies.length === 0 && movies.length > 0)
+    {
+      setMovies(myMovies);
+    }
     if(myMovies.length > 0)
     {
       let arr = [];
@@ -52,7 +60,7 @@ function SavedMovies(props) {
         setMovies(arr)
       }
     }
-  },[isShort, movieName, myMovies, props.myMovies])
+  },[isShort, movieName, movies.length, myMovies, props.myMovies])
 
   function startSearch(movieName, isShort)
   {
@@ -63,7 +71,7 @@ function SavedMovies(props) {
   return(
     <main className='movies'>
       <SearchForm isSaved={true} startSearch={startSearch} />
-      <MoviesCardList firstFind={true} isFind={isFind} setMovies={setMovies} movies={movies} isSaved={true} windowWidth={props.windowWidth} myMovies={myMovies}/>
+      <MoviesCardList firstFind={true} isFind={isFind} setMovies={getMyMovies} movies={movies} isSaved={true} windowWidth={props.windowWidth} myMovies={myMovies}/>
     </main>
   );
 }

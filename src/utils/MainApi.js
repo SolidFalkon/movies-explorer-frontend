@@ -88,23 +88,9 @@ class MainApi {
         email: email
       })
     })
-    .then((response) => {
-      if (response.ok){
-        return response.json();
-      }
-      else if(response.status === 400){
-        // eslint-disable-next-line no-throw-literal
-        throw "400 — не передано одно из полей ";
-      }
-      else if ((response.status === 401))
-      {
-        // eslint-disable-next-line no-throw-literal
-        throw "401 — пользователь с email не найден";
-      }
-    })
-    .then((res) => {
-      return res;
-    })
+    .then((res) => { 
+      return this._checkResponse(res)
+    });
   }
 
   getInitialProfile(){
@@ -156,24 +142,15 @@ class MainApi {
         email: email
       })
     })
-    .then((response) => {
-      if (response.ok){
-        return response.json();
-      }
-      else if(response.status === 400){
-        // eslint-disable-next-line no-throw-literal
-        throw "400 — некорректно заполнено одно из полей";
-      }
-    })
-    .then((res) => {
-      return res;
-    })
+    .then((res) => { 
+      return this._checkResponse(res)
+    });
   }
 //
   // другие методы работы с API
 }
 export const mainApi = new MainApi({
-  baseUrl: 'https://api.cyberfalcon.movies.nomoredomains.work',
+  baseUrl: 'http://localhost:3001',
   headers: {
     'Content-Type': 'application/json'
   }

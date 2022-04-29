@@ -48,7 +48,10 @@ function MoviesCardList(props) {
   function handleSave(movie, isActive, id){
     if (!isActive)
     {
-      mainApi.saveMovie(movie).then({})
+      mainApi.saveMovie(movie)
+      .then(() => {
+        props.setMovies();
+      })
         .catch((err) => {
           console.log(err);
         });
@@ -57,7 +60,7 @@ function MoviesCardList(props) {
     {
       mainApi.deleteCard(id)
       .then(() => {
-        props.setMovies((state) => state.filter((c) => c._id !== id));
+        props.setMovies();
       })
       .catch((err) => {
         console.log(err);

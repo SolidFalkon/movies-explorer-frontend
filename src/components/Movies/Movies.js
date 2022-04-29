@@ -16,14 +16,17 @@ function Movies(props) {
   const [myMovies, setMyMovies] = useState([])
 
   React.useEffect(() => {
+    getMyMovies();
+  } ,[]);
+
+  function getMyMovies(){
     mainApi.getInitialCards().then((res) => {
       setMyMovies(res)
     })
     .catch((err) => {
       console.log(err);
     })
-  } ,[myMovies]);
-  
+  }
   
   React.useEffect(() => {
     props.checkPage();
@@ -80,7 +83,7 @@ function Movies(props) {
     <main className='movies'>
       <SearchForm startSearch={startSearch} isSaved={false}/>
       {onPreloader ? <Preloader/> : <></>}
-      <MoviesCardList setMovies={setMovies} firstFind={firstFind} isSaved={false} windowWidth={props.windowWidth} myMovies={myMovies} movies={movies} isFind={isFind}/>
+      <MoviesCardList setMovies={getMyMovies} firstFind={firstFind} isSaved={false} windowWidth={props.windowWidth} myMovies={myMovies} movies={movies} isFind={isFind}/>
       </main>
   );
 }
